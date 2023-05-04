@@ -1,19 +1,15 @@
 #include "Board.h"`
-#include "Player.h"
-#include "Computer.h"
 
 /*
-EFFECT: Initializes both players or creates a computer player if there is only 1 player.
+EFFECTS: constructs the Board with given number of players, if player count if > 2 or < 1,
+it corrects to nearest player count
 MODIFIES: this
 */
-void Board::initPlayers() {
-	player1 = Player();
-	if (playerCount == 1) {
-		player2 = Computer();
-	}
-	else {
-		player2 = Player();
-	}
+Board::Board(int players) {
+	playerCount = players;
+	if (playerCount > 2) playerCount = 2;
+	if (playerCount < 1) playerCount = 1;
+	initBoard();
 }
 
 /*
@@ -36,19 +32,6 @@ int Board::checkWin(int pos1, int pos2, int pos3, int b[9]) {
 	if (b[pos1] == b[pos2] && b[pos1] == b[pos3])
 		return b[pos1];
 	return 0;
-}
-
-/*
-EFFECTS: constructs the Board with given number of players, if player count if > 2 or < 1,
-it corrects to nearest player count
-MODIFIES: this
-*/
-Board::Board(int players) {
-	playerCount = players;
-	if (playerCount > 2) playerCount = 2;
-	if (playerCount < 1) playerCount = 1;
-	initPlayers();
-	initBoard();
 }
 
 /*
@@ -127,12 +110,5 @@ void Board::freeBoard() {
 
 int** Board::getBoard() {
 	return board;
-}
-
-Player Board::getPlayer(int num) {
-	if (num == 1) {
-		return player1;
-	}
-	return player2;
 }
 
