@@ -1,4 +1,5 @@
-#include "Board.h"`
+#include <utility>
+#include "Board.h"
 
 /*
 EFFECTS: constructs the Board with given number of players, if player count if > 2 or < 1,
@@ -34,6 +35,20 @@ int Board::checkWin(int pos1, int pos2, int pos3, int b[9]) {
 	return 0;
 }
 
+
+/*
+REQUIRES: location from 1 to 9
+EFFECTS: returns an std::pair<int,int> representing the two index of the 2d array board given 
+location on the board based on the following location values:
+3|6|9
+2|5|8
+1|4|7
+*/
+std::pair<int, int> Board::findIndex(int location) {
+	return std::make_pair(-1 * location % 3, location / 3);
+}
+
+
 /*
 REQUIRES: player equal to 1 or 2 and location from 1 to 9
 EFFECT: updates board with player number at the given location on the board based on the following 
@@ -44,7 +59,8 @@ location values:
 MODIFIES: this
 */
 void Board::placeMove(int player, int location) {
-	board[location % 3][location / 3] = player;
+	std::pair<int, int> index = findIndex(location);
+	board[index.first][index.second] = player;
 }
 
 /*
@@ -57,7 +73,8 @@ based on the following location values:
 MODIFIES: none
 */
 bool Board::isValidMove(int location) {
-	return board[location % 3][location / 3] == 0;
+	std::pair<int, int> index = findIndex(location);
+	return board[index.first][index.second] == 0;
 }
 
 /*
