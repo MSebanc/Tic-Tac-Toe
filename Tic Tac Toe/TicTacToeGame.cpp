@@ -21,6 +21,7 @@ void TicTacToeGame::runGame() {
 			processMainMenu(command);
 		}
 	}
+	printf("\nGoodbye!");
 }
 
 void TicTacToeGame::displayMainMenu() {
