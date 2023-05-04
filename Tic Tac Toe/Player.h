@@ -5,5 +5,5 @@ private:
 public:
 	Player();
 	
-	makeMove(int location)
+	void makeMove(int location);
 };
