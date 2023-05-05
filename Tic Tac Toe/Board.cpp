@@ -6,21 +6,21 @@ EFFECTS: constructs the Board with given number of players, if player count if >
 it corrects to nearest player count
 MODIFIES: this
 */
-Board::Board(int players) {
-	playerCount = players;
-	if (playerCount > 2) playerCount = 2;
-	if (playerCount < 1) playerCount = 1;
+Board::Board() {
 	initBoard();
 }
 
 /*
-EFFECT: allocates space in memory for the board
+EFFECT: allocates space in memory for the board and sets all locations to 0
 MODIFIES: this
 */
 void Board::initBoard() {
 	board = new int* [3];
 	for (int i = 0; i < 3; i++) {
 		board[i] = new int[3];
+		for (int j = 0; j < 3; j++) {
+			board[i][j] = 0;
+		}
 	}
 }
 
@@ -29,9 +29,8 @@ REQUIRES: pos1, pos2, pos3 all valid index in given array
 EFFECT: checks for a win by comparing the value at all 3 positions in given board
 MODIFIES: none
 */
-int Board::checkWin(int pos1, int pos2, int pos3, int b[9]) {
-	if (b[pos1] == b[pos2] && b[pos1] == b[pos3])
-		return b[pos1];
+int Board::checkWin(int pos1, int pos2, int pos3, int b[10]) {
+	if (b[pos1] == b[pos2] && b[pos1] == b[pos3]) return b[pos1];
 	return 0;
 }
 
@@ -45,7 +44,18 @@ location on the board based on the following location values:
 1|4|7
 */
 std::pair<int, int> Board::findIndex(int location) {
-	return std::make_pair(-1 * location % 3, location / 3);
+	int index1 = location % 3;
+	if (index1 == 1) {
+		index1++;
+	}
+	else if (index1 == 2) {
+		index1--;
+	}
+	int index2 = location / 3;
+	if (location % 3 == 0) {
+		index2--;
+	}
+	return std::make_pair(index1, index2);
 }
 
 
@@ -90,25 +100,25 @@ int Board::findWinner() {
 	int boardCondenced[10];
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			boardCondenced[3 * (j + 1) - i - 1] = board[i][j];
+			boardCondenced[3 * (j + 1) - i] = board[i][j];
 		}
 	}
 	int winningPlayer = 0;
 	winningPlayer = checkWin(3, 6, 9, boardCondenced);
 	if (winningPlayer) return winningPlayer;
-	checkWin(2, 5, 8, boardCondenced);
+	winningPlayer = checkWin(2, 5, 8, boardCondenced);
 	if (winningPlayer) return winningPlayer;
-	checkWin(1, 4, 7, boardCondenced);
+	winningPlayer = checkWin(1, 4, 7, boardCondenced);
 	if (winningPlayer) return winningPlayer;
-	checkWin(3, 2, 1, boardCondenced);
+	winningPlayer = checkWin(3, 2, 1, boardCondenced);
 	if (winningPlayer) return winningPlayer;
-	checkWin(6, 5, 4, boardCondenced);
+	winningPlayer = checkWin(6, 5, 4, boardCondenced);
 	if (winningPlayer) return winningPlayer;
-	checkWin(9, 8, 7, boardCondenced);
+	winningPlayer = checkWin(9, 8, 7, boardCondenced);
 	if (winningPlayer) return winningPlayer;
-	checkWin(3, 5, 7, boardCondenced);
+	winningPlayer = checkWin(3, 5, 7, boardCondenced);
 	if (winningPlayer) return winningPlayer;
-	checkWin(9, 5, 1, boardCondenced);
+	winningPlayer = checkWin(9, 5, 1, boardCondenced);
 	return winningPlayer;
 }
 
