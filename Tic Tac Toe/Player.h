@@ -1,9 +1,10 @@
 #pragma once
 #include "Board.h"
 class Player {
-private:
+protected: 
 	Board board;
 	int player;
+private:
 	void displayGrid();
 	int inputMove();
 
@@ -12,6 +13,6 @@ public:
 	Player();
 
 	void displayBoard();
-	void makeMove();
-	void displayWinner();
+	virtual void makeMove();
+	virtual void displayWinner();
 };
