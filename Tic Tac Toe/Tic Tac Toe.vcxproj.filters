@@ -19,6 +19,21 @@
     <Filter Include="Source Files\ui">
       <UniqueIdentifier>{d104191f-a03c-4a8f-bde3-9ba0b0f6b21a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ui\ConsoleUI">
+      <UniqueIdentifier>{252bb274-db53-480e-afd8-65338209f8a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\GUI">
+      <UniqueIdentifier>{2266ea77-300a-41b3-af1e-5784437e82e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\model">
+      <UniqueIdentifier>{21d9de14-7b09-442d-9a77-0990cc178d2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ConsoleUI">
+      <UniqueIdentifier>{95b426ea-2d09-4c3f-a650-2329d84992d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{854ca3cb-1fea-47a7-966d-dde7fad8f25a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -28,27 +43,53 @@
       <Filter>Source Files\model</Filter>
     </ClCompile>
     <ClCompile Include="Computer.cpp">
-      <Filter>Source Files\ui</Filter>
+      <Filter>Source Files\ui\ConsoleUI</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Source Files\ui</Filter>
+      <Filter>Source Files\ui\ConsoleUI</Filter>
     </ClCompile>
     <ClCompile Include="TicTacToeGame.cpp">
-      <Filter>Source Files\ui</Filter>
+      <Filter>Source Files\ui\ConsoleUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TicTacToeGameGUI.cpp">
+      <Filter>Source Files\ui\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerGUI.cpp">
+      <Filter>Source Files\ui\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputerGUI.cpp">
+      <Filter>Source Files\ui\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files\model</Filter>
     </ClInclude>
     <ClInclude Include="Computer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ConsoleUI</Filter>
     </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\ConsoleUI</Filter>
     </ClInclude>
     <ClInclude Include="TicTacToeGame.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ConsoleUI</Filter>
     </ClInclude>
+    <ClInclude Include="ComputerGUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerGUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TicTacToeGameGUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="oImage.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="xImage.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

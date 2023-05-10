@@ -21,15 +21,25 @@
   <ItemGroup>
     <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="ComputerGUI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerGUI.cpp" />
     <ClCompile Include="TicTacToeGame.cpp" />
+    <ClCompile Include="TicTacToeGameGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Computer.h" />
+    <ClInclude Include="ComputerGUI.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerGUI.h" />
     <ClInclude Include="TicTacToeGame.h" />
+    <ClInclude Include="TicTacToeGameGUI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="oImage.png" />
+    <Image Include="xImage.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
