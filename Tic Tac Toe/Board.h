@@ -9,7 +9,7 @@ private:
 	int** board;
 
 	void initBoard();
-	int checkWin(int pos1, int pos2, int pos3, int b[9]);
+	int checkWin(int pos1, int pos2, int pos3, int b[10]);
 	std::pair<int, int> findIndex(int location);
 
 public:
