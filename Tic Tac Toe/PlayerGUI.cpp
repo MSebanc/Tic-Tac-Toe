@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 PlayerGUI::PlayerGUI() {
+    player = 0;
+    path = "";
     window = NULL;
     grid = NULL;
     gridTextures = NULL;

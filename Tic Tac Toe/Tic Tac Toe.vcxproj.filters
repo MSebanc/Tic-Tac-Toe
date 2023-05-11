@@ -91,6 +91,15 @@
     <Image Include="xImage.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="OnePlayer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Rules.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="TwoPlayer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Roboto-Regular.ttf">

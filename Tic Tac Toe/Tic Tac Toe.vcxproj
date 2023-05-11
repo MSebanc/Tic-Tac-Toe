@@ -39,6 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="oImage.png" />
+    <Image Include="OnePlayer.png" />
+    <Image Include="Rules.png" />
+    <Image Include="TwoPlayer.png" />
     <Image Include="xImage.png" />
   </ItemGroup>
   <ItemGroup>

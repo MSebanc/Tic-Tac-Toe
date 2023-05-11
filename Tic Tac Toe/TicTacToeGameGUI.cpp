@@ -4,6 +4,7 @@
 #include "ComputerGUI.h"
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <stdlib.h>
 
 TicTacToeGameGUI::TicTacToeGameGUI() {
 	runGame();
@@ -12,6 +13,7 @@ TicTacToeGameGUI::TicTacToeGameGUI() {
 void TicTacToeGameGUI::runGame() {
 
     currentPlayer = 1;
+    playerCount = 1;
     moves = 0;
 
     if (!font.loadFromFile("Roboto-Regular.ttf")) {
@@ -20,9 +22,10 @@ void TicTacToeGameGUI::runGame() {
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Tic Tac Toe!", sf::Style::Titlebar | sf::Style::Close);
 
     initGridShapes();
-    initWinningScreen(window);
+    initWinningScreen();
+    initMainMenu();
 
-    p = playingGame;
+    p = mainMenu;
 
     while (window.isOpen())
     {
@@ -31,20 +34,24 @@ void TicTacToeGameGUI::runGame() {
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            else if (p == playingGame) {
-                checkForMove(window, event);
-            }
-            else if (p == winningScreen) {
-
-            }
         }
 
-        
-
-        player1 = new PlayerGUI(board, 1, &window, &grid[0], &gridTextures[0]);
-        player2 = new PlayerGUI(board, 2, &window, &grid[0], &gridTextures[0]);
+        switch (p) {
+        case playingGame:
+            checkForMove(window, event);
+            break;
+        case winningScreen:
+            break;
+        case mainMenu:
+            checkForSelection(window, event);
+            break;
+        case displayRules:
+            break;
+        }
 
         window.clear();
+
+        if (p == mainMenu) drawMainMenu(window);
 
         if (p == playingGame || p == winningScreen) drawGridShapes(window);
 
@@ -54,12 +61,87 @@ void TicTacToeGameGUI::runGame() {
 
         window.display();
     }
+    free(player1);
+    free(player2);
 }
 
-void TicTacToeGameGUI::initWinningScreen(sf::RenderWindow &window) {
+void TicTacToeGameGUI::checkForSelection(sf::RenderWindow& window, sf::Event event) {
+    window.pollEvent(event);
+    if (event.type == sf::Event::MouseButtonReleased) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            menuSelection(window, sf::Mouse::getPosition(window));
+        }
+    }
+}
+
+void TicTacToeGameGUI::menuSelection(sf::RenderWindow& window, sf::Vector2i pos) {
+    for (int i = 0; i < 3; i++) {
+        if (options[i].getGlobalBounds().contains(window.mapPixelToCoords(pos))) {
+            switch (i) {
+            case 0:
+                p = displayRules;
+                break;
+            case 1:
+                p = playingGame;
+                playerCount = 1;
+                player1 = new PlayerGUI(board, 1, &window, &grid[0], &gridTextures[0]);
+                player2 = new ComputerGUI(board, &window, &grid[0], &gridTextures[0]);
+                break;
+            case 2:
+                p = playingGame;
+                playerCount = 2;
+                player1 = new PlayerGUI(board, 1, &window, &grid[0], &gridTextures[0]);
+                player2 = new PlayerGUI(board, 2, &window, &grid[0], &gridTextures[0]);
+                break;
+            }
+        }
+    }
+}
+
+
+void TicTacToeGameGUI::initMainMenu() {
     winMessage.setFont(font);
     winMessage.setCharacterSize(125);
-    winMessage.setPosition(windowWidth/6.f, windowHeight/11.f);
+    winMessage.setPosition(windowWidth / 6.f, windowHeight / 10.f);
+}
+
+void TicTacToeGameGUI::initWinningScreen() {
+    menuMessage.setFont(font);
+    menuMessage.setCharacterSize(90);
+    menuMessage.setString("Welcome To Tic Tac Toe!\nPlease Select An Option");
+    menuMessage.setPosition(windowWidth/6.f, windowHeight/2.f);
+
+    float height = windowHeight / 5.f;
+    float width = windowWidth / 2.f - optionWidth - offset / 4;
+    for (int i = 0; i < 3; i++) {
+        sf::RectangleShape shape(sf::Vector2f(optionWidth, optionHeight));
+        shape.setOrigin(optionWidth / 2, optionHeight / 2);
+        shape.setPosition(width, height);
+        shape.setOutlineColor(sf::Color(105, 105, 105));
+        shape.setOutlineThickness(optionHeight / 25);
+        options[i] = shape;
+        width += optionWidth + offset / 4;
+    }
+
+    if (!optionTextures[0].loadFromFile("Rules.png")) {
+        printf("Error\n");
+    }
+    options[0].setTexture(&optionTextures[0]);
+    if (!optionTextures[1].loadFromFile("OnePlayer.png")) {
+        printf("Error\n");
+    }
+    options[1].setTexture(&optionTextures[1]);
+    if (!optionTextures[2].loadFromFile("TwoPlayer.png")) {
+        printf("Error\n");
+    }
+    options[2].setTexture(&optionTextures[2]);
+}
+
+void TicTacToeGameGUI::drawMainMenu(sf::RenderWindow &window) {
+    window.draw(menuMessage);
+    for (int i = 0; i < 3; i++) {
+        window.draw(options[i]);
+    }
 }
 
 void TicTacToeGameGUI::drawWin(sf::RenderWindow& window, int winner) {
@@ -74,7 +156,7 @@ void TicTacToeGameGUI::displayDraw(sf::RenderWindow& window) {
 }
 
 void TicTacToeGameGUI::initGridShapes() {
-    float height = windowHeight / 2.f - gridSize + offset;
+    float height = windowHeight / 2.f - gridSize + 2*offset;
     for (int i = 0; i < 3; i++) {
         float width = windowHeight / 2.f - gridSize;
         for (int j = 0; j < 3; j++) {
@@ -97,22 +179,31 @@ void TicTacToeGameGUI::drawGridShapes(sf::RenderWindow &window) {
 }
 
 void TicTacToeGameGUI::checkForMove(sf::RenderWindow& window, sf::Event event) {
-    if (event.type == sf::Event::MouseButtonReleased) {
+    window.pollEvent(event);
+    if (playerCount == 1 && currentPlayer == 2) {
+        computerMove();
+    } else if (event.type == sf::Event::MouseButtonReleased) {
         if (event.mouseButton.button == sf::Mouse::Left) {
-            playerMove(window, sf::Mouse::getPosition(window));
+            playerMove(sf::Mouse::getPosition(window));
         }
     }
 }
+void TicTacToeGameGUI::computerMove() {
+    sf::Vector2i emptyPos(0, 0);
+    player2->makeMove(emptyPos);
+    currentPlayer = 1;
+    moves++;
+}
 
-void TicTacToeGameGUI::playerMove(sf::RenderWindow& window, sf::Vector2i pos) {
+void TicTacToeGameGUI::playerMove(sf::Vector2i pos) {
     if (currentPlayer == 1) {
-        if (player1->makeMove(sf::Mouse::getPosition(window))) {
+        if (player1->makeMove(pos)) {
             currentPlayer = 2;
             moves++;
         }
     }
     else {
-        if (player2->makeMove(sf::Mouse::getPosition(window))) { 
+        if (player2->makeMove(pos)) { 
             currentPlayer = 1; 
             moves++;
         }
