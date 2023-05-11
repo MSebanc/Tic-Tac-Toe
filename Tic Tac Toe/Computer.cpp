@@ -1,10 +1,12 @@
 #include "Computer.h"
 #include "Player.h"
+#include<cstdlib>
 #include <iostream>
 
 Computer::Computer(Board b) {
 	board = b;
 	player = 2;
+	srand((unsigned)time(NULL));
 }
 
 void Computer::makeMove() {
