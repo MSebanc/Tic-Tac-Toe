@@ -41,6 +41,9 @@
     <Image Include="oImage.png" />
     <Image Include="xImage.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Roboto-Regular.ttf" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
