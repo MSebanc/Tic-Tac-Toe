@@ -17,6 +17,8 @@ ComputerGUI::ComputerGUI(Board b, sf::RenderWindow* w, sf::RectangleShape* s, sf
 }
 
 bool ComputerGUI::makeMove(sf::Vector2i pos) {
+	delay.restart();
+	while (delay.getElapsedTime().asSeconds() < wait);
 	if (!difficulty) makeMoveRandom();
 	else makeMoveMinimax();
 	return true;

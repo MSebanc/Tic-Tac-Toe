@@ -5,13 +5,15 @@
 #include <SFML/Graphics.hpp>
 class ComputerGUI : public PlayerGUI{
 private:
+	const float wait = 0.5f;
+
 	struct scoreStruct {
 		int score;
 		int index;
 	};
 
 	int difficulty;
-
+	sf::Clock delay;
 	int randomMove();
 	void makeMoveMinimax();
 	void makeMoveRandom();
