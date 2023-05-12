@@ -103,6 +103,12 @@
     <Image Include="return.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Hard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Easy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Roboto-Regular.ttf">

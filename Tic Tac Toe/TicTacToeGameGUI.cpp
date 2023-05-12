@@ -41,28 +41,100 @@ void TicTacToeGameGUI::runGame() {
         case displayRules:
             checkForReturn(window, event);
             break;
+        case difficulty:
+            checkForDifficultyChoice(window, event);
+            checkForReturn(window, event);
+            break;
         }
 
         window.clear();
 
-        if (p == mainMenu) drawMainMenu(window);
-        if (p == displayRules) drawRules(window);
-
-        if (p == playingGame || p == winningScreen) drawGridShapes(window);
-
         int winner = board.findWinner();
         if (winner || moves == 9) p = winningScreen;
-        if (p == winningScreen) drawWin(window, winner);
+        
+        switch (p) {
+        case mainMenu:
+            drawMainMenu(window);
+            break;
+        case displayRules:
+            drawRules(window);
+            break;
+        case difficulty:
+            drawDifficulty(window);
+            break;
+        case playingGame:
+            drawGridShapes(window);
+            break;
+        case winningScreen:
+            drawWin(window, winner);
+            drawGridShapes(window);
+            break;
+        }
 
         window.display();
     }
-    if (p != mainMenu) clearBoard();
+
+    if (p == playingGame || p == winningScreen) clearBoard();
+    board.freeBoard();
+}
+
+void TicTacToeGameGUI::checkForDifficultyChoice(sf::RenderWindow& window, sf::Event event) {
+    window.pollEvent(event);
+    if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+        difficultySelection(window, sf::Mouse::getPosition(window));
+    }
+}
+
+void TicTacToeGameGUI::difficultySelection(sf::RenderWindow& window, sf::Vector2i pos) {
+    for (int i = 0; i < 2; i++) {
+        if (diff[i].getGlobalBounds().contains(window.mapPixelToCoords(pos))) {
+            player1 = new PlayerGUI(board, 1, &window, &grid[0], &gridTextures[0]);
+            player2 = new ComputerGUI(board, &window, &grid[0], &gridTextures[0], i);
+            p = playingGame;
+        }
+    }
+}
+
+void TicTacToeGameGUI::initDifficultySelection() {
+    diffMessage.setFont(font);
+    diffMessage.setCharacterSize(90);
+    diffMessage.setString("Please Choose A Difficulty\nLevel For Computer\n");
+    diffMessage.setPosition(windowWidth / 6.f, windowHeight / 2.f);
+
+    float height = windowHeight / 5.f;
+    float width = windowWidth / 2.f - optionWidth - offset/4;
+    for (int i = 0; i < 2; i++) {
+        sf::RectangleShape shape(sf::Vector2f(optionWidth, optionHeight));
+        shape.setOrigin(optionWidth / 2, optionHeight / 2);
+        shape.setPosition(width, height);
+        shape.setOutlineColor(sf::Color(105, 105, 105));
+        shape.setOutlineThickness(optionHeight / 25);
+        diff[i] = shape;
+        width += optionWidth*2 + offset/2;
+    }
+
+    if (!diffTexture[0].loadFromFile("Easy.png")) {
+        printf("Error\n");
+    }
+    diff[0].setTexture(&diffTexture[0]);
+    if (!diffTexture[1].loadFromFile("Hard.png")) {
+        printf("Error\n");
+    }
+    diff[1].setTexture(&diffTexture[1]);
+}
+
+void TicTacToeGameGUI::drawDifficulty(sf::RenderWindow& window) {
+    for (int i = 0; i < 2; i++) {
+        window.draw(diff[i]);
+    }
+    window.draw(returnMenu);
+    window.draw(diffMessage);
 }
 
 void TicTacToeGameGUI::clearBoard() {
     free(player1);
     free(player2);
-    board.freeBoard();
+    
 
     board = Board();
     currentPlayer = 1;
@@ -71,6 +143,7 @@ void TicTacToeGameGUI::clearBoard() {
     initGridShapes();
     initWinningScreen();
     initRulesPage();
+    initDifficultySelection();
     initReturnMessage();
     initMainMenu();
 }
@@ -137,10 +210,8 @@ void TicTacToeGameGUI::menuSelection(sf::RenderWindow& window, sf::Vector2i pos)
                 p = displayRules;
                 break;
             case 1:
-                p = playingGame;
+                p = difficulty;
                 playerCount = 1;
-                player1 = new PlayerGUI(board, 1, &window, &grid[0], &gridTextures[0]);
-                player2 = new ComputerGUI(board, &window, &grid[0], &gridTextures[0], 1);
                 break;
             case 2:
                 p = playingGame;

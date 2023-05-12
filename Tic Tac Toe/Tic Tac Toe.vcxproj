@@ -38,6 +38,8 @@
     <ClInclude Include="TicTacToeGameGUI.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Easy.png" />
+    <Image Include="Hard.png" />
     <Image Include="oImage.png" />
     <Image Include="OnePlayer.png" />
     <Image Include="return.png" />
