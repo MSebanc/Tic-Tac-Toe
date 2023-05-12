@@ -12,6 +12,7 @@ PlayerGUI::PlayerGUI() {
 }
 
 PlayerGUI::PlayerGUI(Board b, int p, sf::RenderWindow* w, sf::RectangleShape* s, sf::Texture* t) {
+    board.freeBoard();
 	board = b;
 	player = p;
 	if (player == 1) path = "xImage.png";

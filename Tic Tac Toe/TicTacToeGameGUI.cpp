@@ -12,20 +12,12 @@ TicTacToeGameGUI::TicTacToeGameGUI() {
 
 void TicTacToeGameGUI::runGame() {
 
-    currentPlayer = 1;
-    playerCount = 1;
-    moves = 0;
-
     if (!font.loadFromFile("Roboto-Regular.ttf")) {
         printf("Error!\n");
     }
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Tic Tac Toe!", sf::Style::Titlebar | sf::Style::Close);
 
-    initGridShapes();
-    initWinningScreen();
-    initMainMenu();
-
-    p = mainMenu;
+    clearBoard();
 
     while (window.isOpen())
     {
@@ -41,17 +33,20 @@ void TicTacToeGameGUI::runGame() {
             checkForMove(window, event);
             break;
         case winningScreen:
+            checkForReturn(window, event);
             break;
         case mainMenu:
             checkForSelection(window, event);
             break;
         case displayRules:
+            checkForReturn(window, event);
             break;
         }
 
         window.clear();
 
         if (p == mainMenu) drawMainMenu(window);
+        if (p == displayRules) drawRules(window);
 
         if (p == playingGame || p == winningScreen) drawGridShapes(window);
 
@@ -61,16 +56,76 @@ void TicTacToeGameGUI::runGame() {
 
         window.display();
     }
+    if (p != mainMenu) clearBoard();
+}
+
+void TicTacToeGameGUI::clearBoard() {
     free(player1);
     free(player2);
+    board.freeBoard();
+
+    board = Board();
+    currentPlayer = 1;
+    playerCount = 1;
+    moves = 0;
+    initGridShapes();
+    initWinningScreen();
+    initRulesPage();
+    initReturnMessage();
+    initMainMenu();
+}
+
+void TicTacToeGameGUI::checkForReturn(sf::RenderWindow &window, sf::Event event) {
+    window.pollEvent(event);
+    if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+        returnToMenu(window, sf::Mouse::getPosition(window));
+    }
+}
+
+void TicTacToeGameGUI::returnToMenu(sf::RenderWindow& window, sf::Vector2i pos) {
+    if (returnMenu.getGlobalBounds().contains(window.mapPixelToCoords(pos))) {
+        if (p = winningScreen) clearBoard();
+        p = mainMenu;
+    }
+}
+
+void TicTacToeGameGUI::initReturnMessage() {
+    sf::RectangleShape shape(sf::Vector2f(returnWidth, returnHeight));
+    shape.setOrigin(returnWidth / 2, returnHeight / 2);
+    shape.setPosition(windowWidth / 2.f, windowHeight / 15.f);
+    shape.setOutlineColor(sf::Color(105, 105, 105));
+    shape.setOutlineThickness(returnWidth / 25);
+    returnMenu = shape;
+
+    if (!returnMenuTexture.loadFromFile("return.png")) {
+        printf("Error\n");
+    }
+    returnMenu.setTexture(&returnMenuTexture);
+}
+
+void TicTacToeGameGUI::initRulesPage() {
+    rulesMessage.setFont(font);
+    rulesMessage.setCharacterSize(50);
+    std::string message = "The object of Tic Tac Toe is to get three in a row.\n"
+        "You play on a three by three game board.\n"
+        "The first player is known as X and the second is O.\n"
+        "Players alternate placing Xs and Os on the game board until\n"
+        "either oppent has three in a row or all nine squares are filled.\n"
+        "X always goes first, and in the event that no one has three in a\n"
+        "row, the stalemate is a tie so there is a draw.";
+    rulesMessage.setString(message);
+    rulesMessage.setPosition(windowWidth / 20.f, windowHeight / 7.f);
+}
+
+void TicTacToeGameGUI::drawRules(sf::RenderWindow& window) {
+    window.draw(rulesMessage);
+    window.draw(returnMenu);
 }
 
 void TicTacToeGameGUI::checkForSelection(sf::RenderWindow& window, sf::Event event) {
     window.pollEvent(event);
-    if (event.type == sf::Event::MouseButtonReleased) {
-        if (event.mouseButton.button == sf::Mouse::Left) {
-            menuSelection(window, sf::Mouse::getPosition(window));
-        }
+    if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+        menuSelection(window, sf::Mouse::getPosition(window));
     }
 }
 
@@ -85,7 +140,7 @@ void TicTacToeGameGUI::menuSelection(sf::RenderWindow& window, sf::Vector2i pos)
                 p = playingGame;
                 playerCount = 1;
                 player1 = new PlayerGUI(board, 1, &window, &grid[0], &gridTextures[0]);
-                player2 = new ComputerGUI(board, &window, &grid[0], &gridTextures[0]);
+                player2 = new ComputerGUI(board, &window, &grid[0], &gridTextures[0], 1);
                 break;
             case 2:
                 p = playingGame;
@@ -99,13 +154,13 @@ void TicTacToeGameGUI::menuSelection(sf::RenderWindow& window, sf::Vector2i pos)
 }
 
 
-void TicTacToeGameGUI::initMainMenu() {
+void TicTacToeGameGUI::initWinningScreen() {
     winMessage.setFont(font);
     winMessage.setCharacterSize(125);
     winMessage.setPosition(windowWidth / 6.f, windowHeight / 10.f);
 }
 
-void TicTacToeGameGUI::initWinningScreen() {
+void TicTacToeGameGUI::initMainMenu() {
     menuMessage.setFont(font);
     menuMessage.setCharacterSize(90);
     menuMessage.setString("Welcome To Tic Tac Toe!\nPlease Select An Option");
@@ -148,6 +203,7 @@ void TicTacToeGameGUI::drawWin(sf::RenderWindow& window, int winner) {
     if (winner == 1) player1->drawWin(winMessage);
     else if (winner == 2) player2->drawWin(winMessage);
     else displayDraw(window);
+    window.draw(returnMenu);
 }
 
 void TicTacToeGameGUI::displayDraw(sf::RenderWindow& window) {
@@ -182,10 +238,9 @@ void TicTacToeGameGUI::checkForMove(sf::RenderWindow& window, sf::Event event) {
     window.pollEvent(event);
     if (playerCount == 1 && currentPlayer == 2) {
         computerMove();
-    } else if (event.type == sf::Event::MouseButtonReleased) {
-        if (event.mouseButton.button == sf::Mouse::Left) {
-            playerMove(sf::Mouse::getPosition(window));
-        }
+    }
+    else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+         playerMove(sf::Mouse::getPosition(window));
     }
 }
 void TicTacToeGameGUI::computerMove() {

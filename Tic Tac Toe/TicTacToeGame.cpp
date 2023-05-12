@@ -54,7 +54,7 @@ void TicTacToeGame::displayRules() {
 	printf("Players alternate placing Xs and Os on the game board\n");
 	printf("until either oppent has three in a row or all nine squares ");
 	printf("are filled. X always goes first, and in the event that no\n");
-	printf("one has three in a row, the stalemate is called a cat game.\n");
+	printf("one has three in a row, the stalemate is a draw.\n");
 
 	printf("Enter C To Continue: ");
 	std::string enter;

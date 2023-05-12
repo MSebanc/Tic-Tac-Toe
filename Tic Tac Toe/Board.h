@@ -19,4 +19,5 @@ public:
 	int findWinner();
 	void freeBoard();
 	int** getBoard();
+	int* getCondencedBoard();
 };

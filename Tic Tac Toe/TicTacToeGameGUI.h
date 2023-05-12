@@ -11,6 +11,8 @@ private:
 	const float gridSize = 300.f;
 	const float optionWidth = 400.f;
 	const float optionHeight = 200.f;
+	const float returnHeight = 50.f;
+	const float returnWidth = 100.f;
 	const int windowWidth = 1500;
 	const int windowHeight = 1500;
 	const float offset = 100.f;
@@ -18,7 +20,7 @@ private:
 	int playerCount;
 	int currentPlayer;
 	int moves;
-	enum page p;
+	enum page p = mainMenu;
 	PlayerGUI *player1;
 	PlayerGUI *player2;
 	int round;
@@ -26,25 +28,32 @@ private:
 	sf::Texture gridTextures[10];
 	sf::Text winMessage;
 	sf::Text menuMessage;
+	sf::Text rulesMessage;
+	sf::RectangleShape returnMenu;
 	sf::RectangleShape options[3];
 	sf::Texture optionTextures[3];
+	sf::Texture returnMenuTexture;
 	sf::Font font;
 
 	void runGame();
 	void initGridShapes();
 	void initMainMenu();
 	void initWinningScreen();
-	void initPlayerSelection();
+	void initReturnMessage();
+	void initRulesPage();
 	void drawGridShapes(sf::RenderWindow &window);
 	void drawMainMenu(sf::RenderWindow& window);
 	void drawWin(sf::RenderWindow& window, int winner);
-	void drawPlayerSelection(sf::RenderWindow& window);
+	void drawRules(sf::RenderWindow& window);
 	void playerMove(sf::Vector2i pos);
 	void checkForMove(sf::RenderWindow& window, sf::Event event);
 	void displayDraw(sf::RenderWindow& window);
 	void computerMove();
 	void checkForSelection(sf::RenderWindow& window, sf::Event event);
 	void menuSelection(sf::RenderWindow& window, sf::Vector2i pos);
+	void checkForReturn(sf::RenderWindow& window, sf::Event event);
+	void returnToMenu(sf::RenderWindow& window, sf::Vector2i pos);
+	void clearBoard();
 
 public:
 	TicTacToeGameGUI();
