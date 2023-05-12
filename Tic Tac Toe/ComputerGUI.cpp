@@ -74,6 +74,11 @@ ComputerGUI::scoreStruct ComputerGUI::minimax(int *b, int p) {
 	}
 
 	scoreStruct scores[10];
+	for (int i = 0; i < 10; i++) {
+		scores[i].score = 0;
+		scores[i].index = i;
+	}
+
 	for (int i = 1; i < 10; i++) {
 		if (!b[i]) {
 			b[i] = p;
