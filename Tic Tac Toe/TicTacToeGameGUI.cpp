@@ -134,8 +134,8 @@ void TicTacToeGameGUI::drawDifficulty(sf::RenderWindow& window) {
 void TicTacToeGameGUI::clearBoard() {
     delete player1;
     delete player2;
-    
 
+    board.freeBoard();
     board = Board();
     currentPlayer = 1;
     playerCount = 1;
@@ -157,7 +157,7 @@ void TicTacToeGameGUI::checkForReturn(sf::RenderWindow &window, sf::Event event)
 
 void TicTacToeGameGUI::returnToMenu(sf::RenderWindow& window, sf::Vector2i pos) {
     if (returnMenu.getGlobalBounds().contains(window.mapPixelToCoords(pos))) {
-        if (p = winningScreen) clearBoard();
+        if (p == winningScreen) clearBoard();
         p = mainMenu;
     }
 }

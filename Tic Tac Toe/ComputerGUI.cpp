@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 ComputerGUI::ComputerGUI(Board b, sf::RenderWindow* w, sf::RectangleShape* s, sf::Texture* t, int d) {
+	board.freeBoard();
 	board = b;
 	window = w;
 	grid = s;
