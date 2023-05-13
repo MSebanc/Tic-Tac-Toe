@@ -28,8 +28,6 @@ void ComputerGUI::makeMoveMinimax() {
 	int* b = board.getCondencedBoard();
 	scoreStruct bestMove = minimax(b, player);
 	delete b;
-	printf("%d\n", bestMove.score);
-	printf("%d\n\n", bestMove.index);
 	placeMove(bestMove.index);
 }
 
