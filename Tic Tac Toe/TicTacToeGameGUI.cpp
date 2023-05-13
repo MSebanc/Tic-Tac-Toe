@@ -132,8 +132,8 @@ void TicTacToeGameGUI::drawDifficulty(sf::RenderWindow& window) {
 }
 
 void TicTacToeGameGUI::clearBoard() {
-    free(player1);
-    free(player2);
+    delete player1;
+    delete player2;
     
 
     board = Board();

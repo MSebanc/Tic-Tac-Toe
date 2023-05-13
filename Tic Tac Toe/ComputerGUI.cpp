@@ -27,7 +27,7 @@ bool ComputerGUI::makeMove(sf::Vector2i pos) {
 void ComputerGUI::makeMoveMinimax() {
 	int* b = board.getCondencedBoard();
 	scoreStruct bestMove = minimax(b, player);
-	free(b);
+	delete b;
 	printf("%d\n", bestMove.score);
 	printf("%d\n\n", bestMove.index);
 	placeMove(bestMove.index);
