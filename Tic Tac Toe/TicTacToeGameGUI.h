@@ -4,6 +4,9 @@
 #include "ComputerGUI.h"
 #include <SFML/Graphics.hpp>
 
+/* 
+Represents the graphical display of Tic Tac Toe
+*/
 class TicTacToeGameGUI {
 private:
 	enum page { mainMenu = 0, displayRules = 1, playingGame = 2, winningScreen = 3, difficulty= 4};
@@ -16,6 +19,7 @@ private:
 	const int windowWidth = 1500;
 	const int windowHeight = 1500;
 	const float offset = 100.f;
+
 	Board board;
 	int playerCount;
 	int currentPlayer;

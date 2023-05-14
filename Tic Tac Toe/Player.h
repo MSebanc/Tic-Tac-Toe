@@ -1,5 +1,9 @@
 #pragma once
 #include "Board.h"
+
+/*
+Represents a player in Tic Tac Toe
+*/
 class Player {
 protected: 
 	Board board;

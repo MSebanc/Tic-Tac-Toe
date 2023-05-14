@@ -3,6 +3,10 @@
 #include "Board.h"
 #include<iostream>
 #include <SFML/Graphics.hpp>
+
+/*
+Represents a computer player in Tic Tac Toe
+*/
 class ComputerGUI : public PlayerGUI{
 private:
 	const float wait = 0.5f;

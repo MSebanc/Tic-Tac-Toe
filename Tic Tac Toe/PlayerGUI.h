@@ -2,6 +2,10 @@
 #include "Board.h"
 #include<iostream>
 #include <SFML/Graphics.hpp>
+
+/*
+Represents a player in Tic Tac Toe
+*/
 class PlayerGUI {
 protected:
 	Board board;

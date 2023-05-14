@@ -3,10 +3,18 @@
 #include <algorithm>
 #include <sstream>
 
+/*
+EFFECT: Constructor, starts the game by calling runGame();
+MODIFIES: this
+*/
 TicTacToeGame::TicTacToeGame() {
 	runGame();
 }
 
+/*
+EFFECT: display main menu and processes user input
+MODIFIES: this
+*/
 void TicTacToeGame::runGame() {
 	bool keepGoing = true;
 	printf("Hello and Welcome to Tic Tac Toe!\n");
@@ -27,6 +35,10 @@ void TicTacToeGame::runGame() {
 	printf("Goodbye!\n");
 }
 
+/*
+EFFECT: prints main menu to console
+MODIFIES: none
+*/
 void TicTacToeGame::displayMainMenu() {
 	printf("\nSelect From:\n");
 	printf("\tr -> Rules\n");
@@ -35,6 +47,10 @@ void TicTacToeGame::displayMainMenu() {
 	printf("Enter: ");
 }
 
+/*
+EFFECT: processes user input for main menu
+MODIFIES: this
+*/
 void TicTacToeGame::processMainMenu(std::string command) {
 	if (!command.compare("r")) {
 		displayRules();
@@ -47,6 +63,10 @@ void TicTacToeGame::processMainMenu(std::string command) {
 	}
 }
 
+/*
+EFFECT: prints rules to console
+MODIFIES: none
+*/
 void TicTacToeGame::displayRules() {
 	printf("\nThe object of Tic Tac Toe is to get three in a row. ");
 	printf("You play on a three by three game board.\n");
@@ -62,6 +82,11 @@ void TicTacToeGame::displayRules() {
 	printf("\n");
 }
 
+
+/*
+EFFECT: runs the tic tac toe gameplay with fresh board
+MODIFIES: this
+*/
 void TicTacToeGame::startPlaying() {
 	board.freeBoard();
 	board = Board();
@@ -73,6 +98,10 @@ void TicTacToeGame::startPlaying() {
 	delete player2;
 }
 
+/*
+EFFECT: processes user input for number of players
+MODIFIES: this
+*/
 void TicTacToeGame::playerSelection() {
 	int count = 0;
 	std::string input;
@@ -87,6 +116,10 @@ void TicTacToeGame::playerSelection() {
 	playerCount = count;
 }
 
+/*
+EFFECT: creates new players and creates a computer player for player2 if playerCount is 1
+MODIFIES: this
+*/
 void TicTacToeGame::initPlayers() {
 	player1 = new Player(board, 1);
 	if (playerCount == 1) {
@@ -97,6 +130,10 @@ void TicTacToeGame::initPlayers() {
 	}
 }
 
+/*
+EFFECT: calls makeMove for players until 5 rounds for a draw or a player wins
+MODIFIES: this, Board
+*/
 void TicTacToeGame::rounds() {
 	round = 1;
 	while (!board.findWinner() && round < 5) {
@@ -110,6 +147,10 @@ void TicTacToeGame::rounds() {
 	}
 }
 
+/*
+EFFECT: calls displayWinner for given winner or prints draw message given winner is 0
+MODIFIES: none
+*/
 void TicTacToeGame::displayResults(int winner) {
 	if (!winner) {
 		player1->displayBoard();

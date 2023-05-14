@@ -6,10 +6,18 @@
 #include <cmath>
 #include <stdlib.h>
 
+/*
+EFFECT: Constructor, starts the game by calling runGame();
+MODIFIES: this
+*/
 TicTacToeGameGUI::TicTacToeGameGUI() {
 	runGame();
 }
 
+/*
+EFFECT: displays an sfml window and calls functions for each functionity of the window
+MODIFIES: this, Board
+*/
 void TicTacToeGameGUI::runGame() {
 
     if (!font.loadFromFile("Roboto-Regular.ttf")) {
@@ -78,6 +86,10 @@ void TicTacToeGameGUI::runGame() {
     board.freeBoard();
 }
 
+/*
+EFFECT: checks most recent event to see if it is a left mouse click and calls the difficulySelection function
+MODIFIES: this
+*/
 void TicTacToeGameGUI::checkForDifficultyChoice(sf::RenderWindow& window, sf::Event event) {
     window.pollEvent(event);
     if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
@@ -85,6 +97,11 @@ void TicTacToeGameGUI::checkForDifficultyChoice(sf::RenderWindow& window, sf::Ev
     }
 }
 
+/*
+EFFECT: determines if given position vector is contained in the bounds of difficulty selection buttons 
+and creates a new Player and Computer based on the difficulty of selection
+MODIFIES: this
+*/
 void TicTacToeGameGUI::difficultySelection(sf::RenderWindow& window, sf::Vector2i pos) {
     for (int i = 0; i < 2; i++) {
         if (diff[i].getGlobalBounds().contains(window.mapPixelToCoords(pos))) {
@@ -95,6 +112,11 @@ void TicTacToeGameGUI::difficultySelection(sf::RenderWindow& window, sf::Vector2
     }
 }
 
+
+/*
+EFFECT: initializes sfml objects needed for difficulty selection page and positions them on the page
+MODIFIES: this
+*/
 void TicTacToeGameGUI::initDifficultySelection() {
     diffMessage.setFont(font);
     diffMessage.setCharacterSize(90);
@@ -123,6 +145,10 @@ void TicTacToeGameGUI::initDifficultySelection() {
     diff[1].setTexture(&diffTexture[1]);
 }
 
+/*
+EFFECT: displays difficulty Selection page onto window 
+MODIFIES: this, sf::RenderWindow
+*/
 void TicTacToeGameGUI::drawDifficulty(sf::RenderWindow& window) {
     for (int i = 0; i < 2; i++) {
         window.draw(diff[i]);
@@ -131,6 +157,12 @@ void TicTacToeGameGUI::drawDifficulty(sf::RenderWindow& window) {
     window.draw(diffMessage);
 }
 
+
+/*
+EFFECT: deallocates player1, player2, and board and creates a new board, sets currentPlayer to 1, playerCount to 1,
+moves to 0 and initalizes each page of the game
+MODIFIES: this
+*/
 void TicTacToeGameGUI::clearBoard() {
     delete player1;
     delete player2;
@@ -148,6 +180,10 @@ void TicTacToeGameGUI::clearBoard() {
     initMainMenu();
 }
 
+/*
+EFFECT: checks most recent event to see if it is a left mouse click and calls the returnToMenu function
+MODIFIES: this
+*/
 void TicTacToeGameGUI::checkForReturn(sf::RenderWindow &window, sf::Event event) {
     window.pollEvent(event);
     if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
@@ -155,6 +191,11 @@ void TicTacToeGameGUI::checkForReturn(sf::RenderWindow &window, sf::Event event)
     }
 }
 
+/*
+EFFECT: determines if given position vector is contained in the bounds of the return button,
+clears the game if the current page is winningScreen and sets the page to mainMenu
+MODIFIES: this
+*/
 void TicTacToeGameGUI::returnToMenu(sf::RenderWindow& window, sf::Vector2i pos) {
     if (returnMenu.getGlobalBounds().contains(window.mapPixelToCoords(pos))) {
         if (p == winningScreen) clearBoard();
@@ -162,6 +203,10 @@ void TicTacToeGameGUI::returnToMenu(sf::RenderWindow& window, sf::Vector2i pos) 
     }
 }
 
+/*
+EFFECT: initializes sfml objects needed for the return button and positions them on the page
+MODIFIES: this
+*/
 void TicTacToeGameGUI::initReturnMessage() {
     sf::RectangleShape shape(sf::Vector2f(returnWidth, returnHeight));
     shape.setOrigin(returnWidth / 2, returnHeight / 2);
@@ -176,6 +221,10 @@ void TicTacToeGameGUI::initReturnMessage() {
     returnMenu.setTexture(&returnMenuTexture);
 }
 
+/*
+EFFECT: initializes sfml objects needed for the return page and positions them on the page
+MODIFIES: this
+*/
 void TicTacToeGameGUI::initRulesPage() {
     rulesMessage.setFont(font);
     rulesMessage.setCharacterSize(50);
@@ -190,11 +239,19 @@ void TicTacToeGameGUI::initRulesPage() {
     rulesMessage.setPosition(windowWidth / 20.f, windowHeight / 7.f);
 }
 
+/*
+EFFECT: displays rules page onto window
+MODIFIES: this, sf::RenderWindow
+*/
 void TicTacToeGameGUI::drawRules(sf::RenderWindow& window) {
     window.draw(rulesMessage);
     window.draw(returnMenu);
 }
 
+/*
+EFFECT: checks most recent event to see if it is a left mouse click and calls the menuSelection function
+MODIFIES: this
+*/
 void TicTacToeGameGUI::checkForSelection(sf::RenderWindow& window, sf::Event event) {
     window.pollEvent(event);
     if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
@@ -202,6 +259,12 @@ void TicTacToeGameGUI::checkForSelection(sf::RenderWindow& window, sf::Event eve
     }
 }
 
+/*
+EFFECT: determines if given position vector is contained in the bounds of menu selection buttons
+and changes the page according to the button pressed. Allocates new player1 and player2 if two player
+button is selected
+MODIFIES: this
+*/
 void TicTacToeGameGUI::menuSelection(sf::RenderWindow& window, sf::Vector2i pos) {
     for (int i = 0; i < 3; i++) {
         if (options[i].getGlobalBounds().contains(window.mapPixelToCoords(pos))) {
@@ -224,13 +287,19 @@ void TicTacToeGameGUI::menuSelection(sf::RenderWindow& window, sf::Vector2i pos)
     }
 }
 
-
+/*
+EFFECT: initializes sfml objects needed for the winning screen and positions them on the page
+MODIFIES: this
+*/
 void TicTacToeGameGUI::initWinningScreen() {
     winMessage.setFont(font);
     winMessage.setCharacterSize(125);
     winMessage.setPosition(windowWidth / 6.f, windowHeight / 10.f);
 }
-
+/*
+EFFECT: initializes sfml objects needed for the main menu page and positions them on the page
+MODIFIES: this
+*/
 void TicTacToeGameGUI::initMainMenu() {
     menuMessage.setFont(font);
     menuMessage.setCharacterSize(90);
@@ -263,6 +332,10 @@ void TicTacToeGameGUI::initMainMenu() {
     options[2].setTexture(&optionTextures[2]);
 }
 
+/*
+EFFECT: displays main menu page onto window
+MODIFIES: this, sf::RenderWindow
+*/
 void TicTacToeGameGUI::drawMainMenu(sf::RenderWindow &window) {
     window.draw(menuMessage);
     for (int i = 0; i < 3; i++) {
@@ -270,6 +343,10 @@ void TicTacToeGameGUI::drawMainMenu(sf::RenderWindow &window) {
     }
 }
 
+/*
+EFFECT: displays winning screen page onto window
+MODIFIES: this, sf::RenderWindow
+*/
 void TicTacToeGameGUI::drawWin(sf::RenderWindow& window, int winner) {
     if (winner == 1) player1->drawWin(winMessage);
     else if (winner == 2) player2->drawWin(winMessage);
@@ -277,11 +354,19 @@ void TicTacToeGameGUI::drawWin(sf::RenderWindow& window, int winner) {
     window.draw(returnMenu);
 }
 
+/*
+EFFECT: displays draw message onto window
+MODIFIES: this, sf::RenderWindow
+*/
 void TicTacToeGameGUI::displayDraw(sf::RenderWindow& window) {
     winMessage.setString("Looks Like A Draw!");
     window.draw(winMessage);
 }
 
+/*
+EFFECT: initializes sfml objects needed for the game grid and positions them on the page
+MODIFIES: this
+*/
 void TicTacToeGameGUI::initGridShapes() {
     float height = windowHeight / 2.f - gridSize + 2*offset;
     for (int i = 0; i < 3; i++) {
@@ -299,12 +384,22 @@ void TicTacToeGameGUI::initGridShapes() {
     }
 }
 
+/*
+EFFECT: displays game grid onto window
+MODIFIES: this, sf::RenderWindow
+*/
 void TicTacToeGameGUI::drawGridShapes(sf::RenderWindow &window) {
     for (int i = 1; i < 10; i++) {
         window.draw(grid[i]);
     }
 }
 
+/*
+EFFECT: determines if given position vector is contained in the bounds of game grid
+and places the player move in that location. If it is the computer's turn the computerMove 
+function is called instead
+MODIFIES: this
+*/
 void TicTacToeGameGUI::checkForMove(sf::RenderWindow& window, sf::Event event) {
     window.pollEvent(event);
     if (playerCount == 1 && currentPlayer == 2) {
@@ -314,6 +409,12 @@ void TicTacToeGameGUI::checkForMove(sf::RenderWindow& window, sf::Event event) {
          playerMove(sf::Mouse::getPosition(window));
     }
 }
+
+/*
+EFFECT: calls makeMove function for computer player with empty position vector, increases move count and 
+changes currentPlayer to 1
+MODIFIES: this
+*/
 void TicTacToeGameGUI::computerMove() {
     sf::Vector2i emptyPos(0, 0);
     player2->makeMove(emptyPos);
@@ -321,6 +422,10 @@ void TicTacToeGameGUI::computerMove() {
     moves++;
 }
 
+/*
+EFFECT: calls makeMove function of the current player with given position vector, 
+increases move count and changes currentPlayer to the next player to move
+*/
 void TicTacToeGameGUI::playerMove(sf::Vector2i pos) {
     if (currentPlayer == 1) {
         if (player1->makeMove(pos)) {

@@ -3,21 +3,41 @@
 #include <iostream>
 #include <sstream>
 
+
+/*
+REQUIRES: should not be used
+EFFECT: default constructor, sets player to 0
+MODIFIES: this
+*/
 Player::Player() {
 	player = 0;
 }
 
+/*
+REQUIRES: use this constructor instead of the default contructor
+EFFECTS: constructs the player, frees already existing board and 
+sets board to given board and player to given player
+MODIFIES: this
+*/
 Player::Player(Board b, int p) {
 	board.freeBoard();
 	board = b;
 	player = p;
 }
 
+/*
+EFFECT: calls inputMove and places given move onto the board
+MODIFIES: Board
+*/
 void Player::makeMove() {
 	int location = inputMove();
 	board.placeMove(player, location);
 }
 
+/*
+EFFECT: processes user input for next move until the move is valid and returns location
+MODIFIES: none
+*/
 int Player::inputMove() {
 	int location = 0;
 	std::string input;
@@ -38,6 +58,10 @@ int Player::inputMove() {
 	return location;
 }
 
+/*
+EFFECT: prints current board to console
+MODIFIES: none
+*/
 void Player::displayBoard() {
 	int** b = board.getBoard();
 	for (int i = 0; i < 3; i++) {
@@ -58,6 +82,11 @@ void Player::displayBoard() {
 	}
 }
 
+
+/*
+EFFECT: prints move index numbers to console
+MODIFIES: none
+*/
 void Player::displayGrid() {
 	int** b = board.getBoard();
 	for(int i = 0; i < 3; i++) {
@@ -69,6 +98,10 @@ void Player::displayGrid() {
 	}
 }
 
+/*
+EFFECT: prints winner message to console
+MODIFIES: this
+*/
 void Player::displayWinner(){
 	displayBoard();
 	printf("Congratulations Player %d, you win!!!\n", player);

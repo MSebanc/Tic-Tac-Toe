@@ -42,6 +42,7 @@ location on the board based on the following location values:
 3|6|9
 2|5|8
 1|4|7
+MODIFIES: none
 */
 std::pair<int, int> Board::findIndex(int location) {
 	int index1 = location % 3;
@@ -135,10 +136,18 @@ void Board::freeBoard() {
 	
 // getters
 
+/*
+EFFECT: returns 2d board array
+MODIFIES: none
+*/
 int** Board::getBoard() {
 	return board;
 }
 
+/*
+EFFECT: returns 1d board array
+MODIFIES: none
+*/
 int* Board::getCondencedBoard() {
 	int* boardCondenced = new int[10];
 	for (int i = 0; i < 3; i++) {

@@ -5,6 +5,13 @@
 #include<cstdlib>
 #include <SFML/Graphics.hpp>
 
+/*
+EFFECT: constructs the computer, frees already existing board and sets board to given board,
+window to given window, grid to given game grid, gridTextures to given textures, 
+difficulty to given difficulty, path to player2 image and sets player to 2. Also sets 
+the random seed to current time to maintain randomness in every playthrough
+MODIFIES: this
+*/
 ComputerGUI::ComputerGUI(Board b, sf::RenderWindow* w, sf::RectangleShape* s, sf::Texture* t, int d) {
 	board.freeBoard();
 	board = b;
@@ -17,6 +24,11 @@ ComputerGUI::ComputerGUI(Board b, sf::RenderWindow* w, sf::RectangleShape* s, sf
 	srand((unsigned) time(NULL));
 }
 
+/*
+EFFECT: delays move by 0.5 seconds to feel more natural to players and calls makeMoveRandom
+if difficulty is 0, calls makeMoveMinimax otherwise. Returns true
+MODIFIES: none
+*/
 bool ComputerGUI::makeMove(sf::Vector2i pos) {
 	delay.restart();
 	while (delay.getElapsedTime().asSeconds() < wait);
@@ -25,6 +37,10 @@ bool ComputerGUI::makeMove(sf::Vector2i pos) {
 	return true;
 }
 
+/* 
+EFFECT: runs the minimax algorithm with the condencedBoard and places found best move
+MODIFIES: this
+*/
 void ComputerGUI::makeMoveMinimax() {
 	int* b = board.getCondencedBoard();
 	scoreStruct bestMove = minimax(b, player);
@@ -32,6 +48,12 @@ void ComputerGUI::makeMoveMinimax() {
 	placeMove(bestMove.index);
 }
 
+/*
+REQUIRES: given array is length 10
+EFFECT: returns true if any of the possible winning rows, columns and diagonals 
+are equal to given player, false otherwise
+MODIFIES: none
+*/
 bool ComputerGUI::findWinner(int *b, int p) {
 	if ((b[3] == b[6] && b[3] == b[9] && b[3] == p) ||
 		(b[2] == b[5] && b[2] == b[8] && b[2] == p) ||
@@ -47,13 +69,22 @@ bool ComputerGUI::findWinner(int *b, int p) {
 	return false;
 }
 
+/*
+* REQUIRES: given array is length 10
+EFFECT: returns true if all locations are occupied, false otherwise
+*/
 bool ComputerGUI::noMoreMoves(int *b) {
 	for (int i = 1; i < 10; i++) {
 		if (!b[i]) return false;
 	}
 	return true;
 }
-
+/*
+REQUIRES: given array is length 10
+EFFECT: runs recursive minimax algorithm. 
+See https://en.wikipedia.org/wiki/Minimax for info on the algorithm
+MODIFIES: none
+*/
 ComputerGUI::scoreStruct ComputerGUI::minimax(int *b, int p) {
 	if (findWinner(b, 1)) {
 		scoreStruct score;
@@ -124,11 +155,19 @@ ComputerGUI::scoreStruct ComputerGUI::minimax(int *b, int p) {
 	return bestStruct;
 }
 
+/*
+EFFECT: calls randomMove and calls placeMove with returned location
+MODIFIES: this
+*/
 void ComputerGUI::makeMoveRandom() {
 	int location = randomMove();
 	placeMove(location);
 }
 
+/*
+EFFECT: finds a random number from 1 to 9 until the move is valid, then returns the move location
+MODIFIES: none
+*/
 int ComputerGUI::randomMove() {
 	int location = 0;
 	while (location < 1 || location > 9 || !board.isValidMove(location)) {
@@ -137,6 +176,10 @@ int ComputerGUI::randomMove() {
 	return location;
 }
 
+/*
+EFFECT: sets text string to winning message and displays on the window
+MODIFIES: this, sf::RenderWindow
+*/
 void ComputerGUI::drawWin(sf::Text text) {
 	text.setString("Uh Oh, You Lost...");
 	window->draw(text);

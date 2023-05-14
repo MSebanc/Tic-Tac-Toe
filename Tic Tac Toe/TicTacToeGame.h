@@ -4,6 +4,9 @@
 #include "Player.h"
 #include "Computer.h"
 
+/*
+Represents the console based display of Tic Tac Toe
+*/
 class TicTacToeGame {
 private:
 	Board board;
