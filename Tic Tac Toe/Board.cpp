@@ -2,19 +2,10 @@
 #include "Board.h"
 
 /*
-EFFECTS: constructs the Board with given number of players, if player count if > 2 or < 1,
-it corrects to nearest player count
+EFFECT: constructs board by allocating space in memory for the board and setting all locations to 0
 MODIFIES: this
 */
 Board::Board() {
-	initBoard();
-}
-
-/*
-EFFECT: allocates space in memory for the board and sets all locations to 0
-MODIFIES: this
-*/
-void Board::initBoard() {
 	board = new int* [3];
 	for (int i = 0; i < 3; i++) {
 		board[i] = new int[3];
