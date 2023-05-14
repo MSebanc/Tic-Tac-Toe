@@ -4,6 +4,7 @@
 #include <iostream>
 
 Computer::Computer(Board b) {
+	board.freeBoard();
 	board = b;
 	player = 2;
 	srand((unsigned)time(NULL));

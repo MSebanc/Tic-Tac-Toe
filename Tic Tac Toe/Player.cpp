@@ -8,6 +8,7 @@ Player::Player() {
 }
 
 Player::Player(Board b, int p) {
+	board.freeBoard();
 	board = b;
 	player = p;
 }
