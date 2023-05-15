@@ -11,7 +11,7 @@
 - Read rules on how to play Tic Tac Toe
 - Play two player Tic Tac Toe
 - Play one player Tic Tac Toe against a computer
-- Player one player Tic Tac Toe against an unbeatable computer
+- Play one player Tic Tac Toe against an unbeatable computer or a easier version
 
 **_Users_**
 
